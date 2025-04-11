@@ -1,0 +1,259 @@
+---
+layout: default
+title: RSS Feed Viewer
+permalink: /feed-viewer/
+---
+
+<div class="container">
+  <h1 class="title is-2">RSS Feed Viewer</h1>
+  <p class="subtitle">Viewing news from <span id="source-name">selected source</span></p>
+
+  <div id="loading-notification" class="notification is-warning is-light">
+    <div class="level">
+      <div class="level-left">
+        <div class="level-item">
+          <span class="icon is-large">
+            <i class="fas fa-spinner fa-pulse fa-2x"></i>
+          </span>
+        </div>
+        <div class="level-item">
+          <div>
+            <p class="is-size-5 has-text-weight-bold">Loading RSS Feed</p>
+            <p>Please wait while we fetch the latest news. This may take up to 30 seconds depending on the source.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notification is-info is-light">
+    <p class="has-text-weight-bold">About RSS Feeds</p>
+    <p>RSS feeds are fetched directly from news sources and may take some time to load. If the feed doesn't load after 30 seconds, you can try refreshing the page or visit the source website directly.</p>
+  </div>
+
+  <div id="feed-content" class="content">
+    <!-- Feed items will be displayed here -->
+  </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<style>
+  /* Fix contrast issues in both light and dark modes */
+  .notification.is-light {
+    background-color: #f5f5f5;
+    color: #4a4a4a;
+  }
+
+  .dark-mode .notification.is-light {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .notification.is-warning.is-light {
+    background-color: #3d3000;
+    color: #ffffff;
+  }
+
+  .dark-mode .notification.is-info.is-light {
+    background-color: #1d3c5a;
+    color: #ffffff;
+  }
+
+  .dark-mode .notification.is-danger {
+    background-color: #5c1a1a;
+    color: #ffffff;
+  }
+
+  /* Fix card contrast in dark mode */
+  .dark-mode .card {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .card-content {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .card .title,
+  .dark-mode .card .subtitle,
+  .dark-mode .card .content {
+    color: #ffffff !important;
+  }
+
+  /* Fix box contrast in dark mode */
+  .dark-mode .box {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  /* Custom classes for dynamically generated content */
+  .dark-mode-card {
+    background-color: #2c2c2c !important;
+    color: #ffffff !important;
+  }
+
+  .dark-mode-content {
+    background-color: #2c2c2c !important;
+    color: #ffffff !important;
+  }
+
+  .dark-mode-content .title,
+  .dark-mode-content .subtitle,
+  .dark-mode-content .content {
+    color: #ffffff !important;
+  }
+
+  .dark-mode-content a:not(.button) {
+    color: #4da6ff !important;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const feedUrl = urlParams.get('url');
+
+    if (!feedUrl) {
+      document.getElementById('feed-content').innerHTML = '<div class="notification is-danger">No feed URL provided.</div>';
+      return;
+    }
+
+    // Use a CORS proxy to fetch the RSS feed
+    const corsProxy = 'https://api.allorigins.win/raw?url=';
+    const proxyUrl = corsProxy + encodeURIComponent(feedUrl);
+
+    fetch(proxyUrl)
+      .then(response => response.text())
+      .then(str => new window.DOMParser().parseFromString(str, "text/xml"))
+      .then(data => {
+        const feedTitle = data.querySelector('channel > title')?.textContent || 'RSS Feed';
+        document.getElementById('source-name').textContent = feedTitle;
+
+        const items = data.querySelectorAll('item');
+        let html = '<div class="columns is-multiline">';
+
+        items.forEach(item => {
+          const title = item.querySelector('title')?.textContent || 'No Title';
+          const link = item.querySelector('link')?.textContent || '#';
+          const description = item.querySelector('description')?.textContent || 'No description available.';
+          const pubDate = item.querySelector('pubDate')?.textContent || '';
+
+          // Format the date
+          let formattedDate = '';
+          if (pubDate) {
+            const date = new Date(pubDate);
+            formattedDate = date.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+          }
+
+          // Create a temporary element to safely parse HTML from description
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = description;
+
+          // Get the first image if available
+          const firstImage = tempDiv.querySelector('img');
+          const imageUrl = firstImage ? firstImage.src : '';
+
+          // Clean text content
+          const textContent = tempDiv.textContent.trim().substring(0, 150) + '...';
+
+          // Check if dark mode is active
+          const isDarkMode = document.body.classList.contains('dark-mode');
+          const cardClass = isDarkMode ? 'card dark-mode-card' : 'card';
+          const cardContentClass = isDarkMode ? 'card-content dark-mode-content' : 'card-content';
+
+          html += `
+            <div class="column is-one-third">
+              <div class="${cardClass}">
+                ${imageUrl ? `
+                <div class="card-image">
+                  <figure class="image is-16by9">
+                    <img src="${imageUrl}" alt="${title}">
+                  </figure>
+                </div>` : ''}
+                <div class="${cardContentClass}">
+                  <p class="title is-4">
+                    <a href="${link}" target="_blank">${title}</a>
+                  </p>
+                  ${formattedDate ? `<p class="subtitle is-6">${formattedDate}</p>` : ''}
+                  <div class="content">
+                    ${textContent}
+                  </div>
+                  <a href="${link}" class="button is-link is-small" target="_blank">Read Full Article</a>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        html += '</div>';
+        document.getElementById('feed-content').innerHTML = html;
+
+        // Hide loading notification
+        document.getElementById('loading-notification').style.display = 'none';
+      })
+      .catch(error => {
+        console.error('Error fetching RSS feed:', error);
+
+        // Hide loading notification
+        document.getElementById('loading-notification').style.display = 'none';
+
+        document.getElementById('feed-content').innerHTML = `
+          <div class="notification is-danger">
+            <h4 class="title is-4">Unable to Load RSS Feed</h4>
+            <p>We couldn't load the RSS feed at this time. This could be due to:</p>
+            <ul>
+              <li>The source website is temporarily unavailable</li>
+              <li>CORS restrictions preventing access to the feed</li>
+              <li>Network connectivity issues</li>
+            </ul>
+            <p class="mt-3">You can try:</p>
+            <ul>
+              <li>Refreshing this page</li>
+              <li>Visiting the source website directly</li>
+              <li>Trying again later</li>
+            </ul>
+            <p class="is-size-7 mt-3">Technical details: ${error.message}</p>
+          </div>
+        `;
+      });
+
+    // Listen for dark mode toggle
+    const darkModeToggle = document.querySelector('.dark-mode-toggle');
+    if (darkModeToggle) {
+      darkModeToggle.addEventListener('click', function() {
+        // Wait a moment for the dark mode class to be applied
+        setTimeout(function() {
+          const isDarkMode = document.body.classList.contains('dark-mode');
+
+          // Update all cards
+          const cards = document.querySelectorAll('.card');
+          cards.forEach(card => {
+            if (isDarkMode) {
+              card.classList.add('dark-mode-card');
+            } else {
+              card.classList.remove('dark-mode-card');
+            }
+          });
+
+          // Update all card contents
+          const cardContents = document.querySelectorAll('.card-content');
+          cardContents.forEach(content => {
+            if (isDarkMode) {
+              content.classList.add('dark-mode-content');
+            } else {
+              content.classList.remove('dark-mode-content');
+            }
+          });
+        }, 100);
+      });
+    }
+  });
+</script>

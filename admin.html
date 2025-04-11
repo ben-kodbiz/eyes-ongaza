@@ -1,0 +1,568 @@
+---
+layout: default
+title: Content Templates
+permalink: /admin/
+---
+
+<div class="container">
+  <h1 class="title is-2">Content Templates</h1>
+  <p class="subtitle">Copy these templates to create new poems or articles</p>
+
+  <div class="notification is-info is-light">
+    <p>This page provides templates for creating new content files. Simply copy the template, replace the placeholder values, and save the file in the appropriate directory.</p>
+  </div>
+
+  <div class="tabs is-boxed">
+    <ul>
+      <li class="is-active" id="poem-tab-simple">
+        <a>
+          <span>Poem Template</span>
+        </a>
+      </li>
+      <li id="article-tab-simple">
+        <a>
+          <span>Article Template</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Poem Template -->
+  <div id="poem-template" class="content-template">
+    <div class="box">
+      <h3 class="title is-4">Poem Template</h3>
+
+      <p>Copy this template, replace the placeholder values, and save it as <code>YYYY-MM-DD-title-of-poem.md</code> in the <code>_poems</code> directory.</p>
+
+      <div class="field">
+        <label class="label">Template:</label>
+        <div class="control">
+          <textarea class="textarea is-family-monospace" rows="20" readonly onclick="this.select();">---
+layout: poem
+title: "Title of Your Poem"
+date: 2024-05-01
+author: "Author Name"
+dedication: "Who this poem is dedicated to"
+---
+
+*A poem dedicated to [dedication]*
+
+## [Title]
+
+First stanza of your poem
+Goes right here with line breaks
+Expressing your emotions
+
+Second stanza continues
+With more powerful words
+Honoring Palestinian resilience
+
+*In memory of those who have lost their lives in Palestine*</textarea>
+        </div>
+      </div>
+
+      <p class="help">Click in the text area to select all content for easy copying</p>
+    </div>
+  </div>
+
+  <!-- Article Template -->
+  <div id="article-template" class="content-template is-hidden">
+    <div class="box">
+      <h3 class="title is-4">Article Template</h3>
+
+      <p>Copy this template, replace the placeholder values, and save it as <code>YYYY-MM-DD-title-of-article.md</code> in the <code>_articles_history</code> directory.</p>
+
+      <div class="field">
+        <label class="label">Template:</label>
+        <div class="control">
+          <textarea class="textarea is-family-monospace" rows="20" readonly onclick="this.select();">---
+layout: post
+title: "Title of Your Article"
+date: 2024-05-01
+author: "Author Name"
+categories: ["Category1", "Category2"]
+---
+
+## Introduction
+
+This is the introduction to your article. Provide context and background information here.
+
+## Main Section
+
+Your main content goes here. You can use Markdown formatting for:
+- Lists
+- *Emphasis*
+- **Strong emphasis**
+- [Links](https://example.com)
+
+### Subsection
+
+More detailed information can be organized in subsections.
+
+## Conclusion
+
+Summarize your article here and provide any final thoughts or calls to action.</textarea>
+        </div>
+      </div>
+
+      <p class="help">Click in the text area to select all content for easy copying</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Tab switching
+    const poemTab = document.getElementById('poem-tab-simple');
+    const articleTab = document.getElementById('article-tab-simple');
+    const poemTemplate = document.getElementById('poem-template');
+    const articleTemplate = document.getElementById('article-template');
+
+    poemTab.addEventListener('click', function() {
+      poemTab.classList.add('is-active');
+      articleTab.classList.remove('is-active');
+      poemTemplate.classList.remove('is-hidden');
+      articleTemplate.classList.add('is-hidden');
+    });
+
+    articleTab.addEventListener('click', function() {
+      articleTab.classList.add('is-active');
+      poemTab.classList.remove('is-active');
+      articleTemplate.classList.remove('is-hidden');
+      poemTemplate.classList.add('is-hidden');
+    });
+  });
+</script>
+
+<style>
+  /* Fix contrast issues in dark mode */
+  .dark-mode .box {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .box .title,
+  .dark-mode .box .subtitle,
+  .dark-mode .box .content {
+    color: #ffffff !important;
+  }
+
+  .dark-mode .notification.is-light {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .notification.is-info.is-light {
+    background-color: #1d3c5a;
+    color: #ffffff;
+  }
+
+  .dark-mode .tabs a {
+    color: #ffffff;
+  }
+
+  .dark-mode .tabs li.is-active a {
+    color: #3273dc;
+    border-color: #3273dc;
+  }
+
+  .dark-mode pre {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+
+  .dark-mode code {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+
+  .dark-mode .input,
+  .dark-mode .textarea {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border-color: #4a4a4a;
+  }
+
+  .dark-mode .label {
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set today's date as default
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('poem-date').value = today;
+    document.getElementById('article-date').value = today;
+
+    // Tab switching
+    const poemTab = document.getElementById('poem-tab');
+    const articleTab = document.getElementById('article-tab');
+    const poemForm = document.getElementById('poem-form');
+    const articleForm = document.getElementById('article-form');
+
+    poemTab.addEventListener('click', function() {
+      poemTab.classList.add('is-active');
+      articleTab.classList.remove('is-active');
+      poemForm.classList.remove('is-hidden');
+      articleForm.classList.add('is-hidden');
+
+      // Hide any result messages when switching tabs
+      hideResults();
+    });
+
+    articleTab.addEventListener('click', function() {
+      articleTab.classList.add('is-active');
+      poemTab.classList.remove('is-active');
+      articleForm.classList.remove('is-hidden');
+      poemForm.classList.add('is-hidden');
+
+      // Hide any result messages when switching tabs
+      hideResults();
+    });
+
+    // Helper function to hide all result messages
+    function hideResults() {
+      document.getElementById('poem-result').classList.add('is-hidden');
+      document.getElementById('poem-save-result').classList.add('is-hidden');
+      document.getElementById('poem-error').classList.add('is-hidden');
+      document.getElementById('article-result').classList.add('is-hidden');
+      document.getElementById('article-save-result').classList.add('is-hidden');
+      document.getElementById('article-error').classList.add('is-hidden');
+    }
+
+    // Generate poem file (preview only)
+    document.getElementById('generate-poem').addEventListener('click', function() {
+      generatePoemContent(false);
+    });
+
+    // Save poem file
+    document.getElementById('save-poem').addEventListener('click', function() {
+      generatePoemContent(true);
+    });
+
+    // Generate article file (preview only)
+    document.getElementById('generate-article').addEventListener('click', function() {
+      generateArticleContent(false);
+    });
+
+    // Save article file
+    document.getElementById('save-article').addEventListener('click', function() {
+      generateArticleContent(true);
+    });
+
+    // Function to generate poem content and optionally save it
+    function generatePoemContent(saveFile) {
+      const title = document.getElementById('poem-title').value;
+      const author = document.getElementById('poem-author').value;
+      const dedication = document.getElementById('poem-dedication').value;
+      const date = document.getElementById('poem-date').value;
+      const content = document.getElementById('poem-content').value;
+
+      if (!title || !author || !date) {
+        alert('Please fill in all required fields (Title, Author, Date)');
+        return;
+      }
+
+      // Generate filename
+      const filename = createFilename(date, title);
+
+      // Generate file content
+      let fileContent = `---
+layout: poem
+title: "${title}"
+date: ${date}
+author: "${author}"
+`;
+
+      if (dedication) {
+        fileContent += `dedication: "${dedication}"
+`;
+      }
+
+      fileContent += `---
+
+*A poem dedicated to ${dedication || 'those who need to be remembered'}*
+
+## ${title}
+
+${content || 'First stanza of your poem
+Goes right here with line breaks
+Expressing your emotions
+
+Second stanza continues
+With more powerful words
+Honoring Palestinian resilience'}
+
+*In memory of those who have lost their lives in Palestine*`;
+
+      // Display result
+      document.getElementById('poem-filename').textContent = filename;
+      document.getElementById('poem-file-content').textContent = fileContent;
+
+      if (!saveFile) {
+        // Just show preview
+        document.getElementById('poem-result').classList.remove('is-hidden');
+        document.getElementById('poem-save-result').classList.add('is-hidden');
+        document.getElementById('poem-error').classList.add('is-hidden');
+      } else {
+        // Save the file
+        saveContent('poem', title, author, dedication, '', date, content, filename);
+      }
+    }
+
+    // Function to generate article content and optionally save it
+    function generateArticleContent(saveFile) {
+      const title = document.getElementById('article-title').value;
+      const author = document.getElementById('article-author').value;
+      const categoriesInput = document.getElementById('article-categories').value;
+      const date = document.getElementById('article-date').value;
+      const content = document.getElementById('article-content').value;
+
+      if (!title || !author || !date) {
+        alert('Please fill in all required fields (Title, Author, Date)');
+        return;
+      }
+
+      // Format categories
+      const categories = categoriesInput ? categoriesInput.split(',').map(cat => `"${cat.trim()}"`).join(', ') : '';
+
+      // Generate filename
+      const filename = createFilename(date, title);
+
+      // Generate file content
+      let fileContent = `---
+layout: post
+title: "${title}"
+date: ${date}
+author: "${author}"
+`;
+
+      if (categories) {
+        fileContent += `categories: [${categories}]
+`;
+      }
+
+      fileContent += `---
+
+${content || '## Introduction\n\nReplace this with your article content.'}`;
+
+      // Display result
+      document.getElementById('article-filename').textContent = filename;
+      document.getElementById('article-file-content').textContent = fileContent;
+
+      if (!saveFile) {
+        // Just show preview
+        document.getElementById('article-result').classList.remove('is-hidden');
+        document.getElementById('article-save-result').classList.add('is-hidden');
+        document.getElementById('article-error').classList.add('is-hidden');
+      } else {
+        // Save the file
+        saveContent('article', title, author, '', categoriesInput, date, content, filename);
+      }
+    }
+
+    // Function to save content (JavaScript-only approach)
+    function saveContent(contentType, title, author, dedication, categories, date, content, filename) {
+      // Generate file content
+      let fileContent = contentType === 'poem'
+        ? `---\nlayout: poem\ntitle: "${title}"\ndate: ${date}\nauthor: "${author}"\n`
+        : `---\nlayout: post\ntitle: "${title}"\ndate: ${date}\nauthor: "${author}"\n`;
+
+      if (contentType === 'poem' && dedication) {
+        fileContent += `dedication: "${dedication}"\n`;
+      } else if (contentType === 'article' && categories) {
+        // Format categories
+        const categoriesArray = categories.split(',').map(cat => `"${cat.trim()}"`).join(', ');
+        fileContent += `categories: [${categoriesArray}]\n`;
+      }
+
+      if (contentType === 'poem') {
+        fileContent += `---\n\n*A poem dedicated to ${dedication || 'those who need to be remembered'}*\n\n## ${title}\n\n${content || 'First stanza of your poem\nGoes right here with line breaks\nExpressing your emotions\n\nSecond stanza continues\nWith more powerful words\nHonoring Palestinian resilience'}\n\n*In memory of those who have lost their lives in Palestine*`;
+      } else {
+        fileContent += `---\n\n${content || '## Introduction\n\nReplace this with your article content.'}`;
+      }
+
+      // Don't try to download automatically - just show the content and provide a download button
+      console.log('File content prepared:', filename);
+
+      // Show success message
+      if (contentType === 'poem') {
+        document.getElementById('poem-result').classList.add('is-hidden');
+        document.getElementById('poem-save-result').classList.remove('is-hidden');
+        document.getElementById('poem-error').classList.add('is-hidden');
+
+        // Show content and provide copy/save instructions
+        document.getElementById('poem-save-result').innerHTML = `
+          <div class="notification is-info is-light">
+            <p class="has-text-weight-bold">Your poem file is ready: <strong>${filename}</strong></p>
+            <p>Since automatic downloads may be blocked by your browser, please follow these steps:</p>
+            <ol>
+              <li>Copy the entire content below</li>
+              <li>Create a new file named <code>${filename}</code> in your text editor</li>
+              <li>Paste the content and save the file</li>
+              <li>Move the file to the <code>_poems</code> directory in your project</li>
+            </ol>
+          </div>
+
+          <div class="field">
+            <label class="label">File Content (Copy this):</label>
+            <div class="control">
+              <textarea class="textarea is-family-monospace" rows="15" readonly onclick="this.select();">${fileContent}</textarea>
+            </div>
+            <p class="help">Click in the text area to select all content for easy copying</p>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <button class="button is-primary" id="copy-poem-content">Copy to Clipboard</button>
+            </div>
+          </div>
+        `;
+
+        // Add event listener for copy button
+        setTimeout(() => {
+          const copyButton = document.getElementById('copy-poem-content');
+          if (copyButton) {
+            copyButton.addEventListener('click', function() {
+              const textarea = document.querySelector('#poem-save-result textarea');
+              if (textarea) {
+                textarea.select();
+                try {
+                  // Try modern clipboard API first
+                  if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(textarea.value)
+                      .then(() => {
+                        copyButton.textContent = 'Copied!';
+                        setTimeout(() => {
+                          copyButton.textContent = 'Copy to Clipboard';
+                        }, 2000);
+                      })
+                      .catch(err => {
+                        console.error('Clipboard API error:', err);
+                        // Fall back to execCommand
+                        fallbackCopy();
+                      });
+                  } else {
+                    // Fall back to execCommand
+                    fallbackCopy();
+                  }
+
+                  function fallbackCopy() {
+                    textarea.select();
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                      copyButton.textContent = 'Copied!';
+                      setTimeout(() => {
+                        copyButton.textContent = 'Copy to Clipboard';
+                      }, 2000);
+                    } else {
+                      alert('Unable to copy text. Please select and copy manually.');
+                    }
+                  }
+                } catch (err) {
+                  console.error('Error copying text:', err);
+                  alert('Unable to copy text. Please select and copy manually.');
+                }
+              } else {
+                console.error('Textarea not found');
+                alert('Unable to find text to copy. Please select and copy manually.');
+              }
+            });
+          }
+        }, 100);
+      } else {
+        document.getElementById('article-result').classList.add('is-hidden');
+        document.getElementById('article-save-result').classList.remove('is-hidden');
+        document.getElementById('article-error').classList.add('is-hidden');
+
+        // Show content and provide copy/save instructions
+        document.getElementById('article-save-result').innerHTML = `
+          <div class="notification is-info is-light">
+            <p class="has-text-weight-bold">Your article file is ready: <strong>${filename}</strong></p>
+            <p>Since automatic downloads may be blocked by your browser, please follow these steps:</p>
+            <ol>
+              <li>Copy the entire content below</li>
+              <li>Create a new file named <code>${filename}</code> in your text editor</li>
+              <li>Paste the content and save the file</li>
+              <li>Move the file to the <code>_articles_history</code> directory in your project</li>
+            </ol>
+          </div>
+
+          <div class="field">
+            <label class="label">File Content (Copy this):</label>
+            <div class="control">
+              <textarea class="textarea is-family-monospace" rows="15" readonly onclick="this.select();">${fileContent}</textarea>
+            </div>
+            <p class="help">Click in the text area to select all content for easy copying</p>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <button class="button is-primary" id="copy-article-content">Copy to Clipboard</button>
+            </div>
+          </div>
+        `;
+
+        // Add event listener for copy button
+        setTimeout(() => {
+          const copyButton = document.getElementById('copy-article-content');
+          if (copyButton) {
+            copyButton.addEventListener('click', function() {
+              const textarea = document.querySelector('#article-save-result textarea');
+              if (textarea) {
+                textarea.select();
+                try {
+                  // Try modern clipboard API first
+                  if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(textarea.value)
+                      .then(() => {
+                        copyButton.textContent = 'Copied!';
+                        setTimeout(() => {
+                          copyButton.textContent = 'Copy to Clipboard';
+                        }, 2000);
+                      })
+                      .catch(err => {
+                        console.error('Clipboard API error:', err);
+                        // Fall back to execCommand
+                        fallbackCopy();
+                      });
+                  } else {
+                    // Fall back to execCommand
+                    fallbackCopy();
+                  }
+
+                  function fallbackCopy() {
+                    textarea.select();
+                    const successful = document.execCommand('copy');
+                    if (successful) {
+                      copyButton.textContent = 'Copied!';
+                      setTimeout(() => {
+                        copyButton.textContent = 'Copy to Clipboard';
+                      }, 2000);
+                    } else {
+                      alert('Unable to copy text. Please select and copy manually.');
+                    }
+                  }
+                } catch (err) {
+                  console.error('Error copying text:', err);
+                  alert('Unable to copy text. Please select and copy manually.');
+                }
+              } else {
+                console.error('Textarea not found');
+                alert('Unable to find text to copy. Please select and copy manually.');
+              }
+            });
+          }
+        }, 100);
+      }
+    }
+
+    // Helper function to create filename
+    function createFilename(date, title) {
+      // Convert to lowercase, replace spaces with hyphens, remove special characters
+      const sanitizedTitle = title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+      return date ? `${date}-${sanitizedTitle}.md` : sanitizedTitle;
+    }
+  });
+</script>

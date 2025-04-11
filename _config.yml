@@ -1,0 +1,80 @@
+title: Palestine & Gaza News  # Your site title
+description: Your source for news related to Palestine and Gaza, aggregated from reputable sources.
+baseurl: "" # Leave empty for GitHub Pages root, or set to your repository name if deploying to a subpath (e.g., "/palestine-gaza-news")
+url: "your-github-username.github.io/your-repository-name" # Replace with your GitHub Pages URL
+
+# Language settings
+#languages: ["en", "ms"]
+#default_language: "en"
+#language_names:
+#  en: "English"
+#  ms: "Bahasa Melayu"
+
+collections:
+  news_items:
+    output: true
+    permalink: /news/:path/
+  blog:
+    output: true
+    permalink: /blog/:path/
+  articles_history:
+    output: true
+    permalink: /articles/:path/
+  poems:
+    output: true
+    permalink: /poems/:path/
+
+# Add defaults for content types
+defaults:
+  - scope:
+      path: ""
+      type: "blog"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "articles_history"
+    values:
+      layout: "post"
+  - scope:
+      path: ""
+      type: "poems"
+    values:
+      layout: "poem"
+
+rss_feeds:
+  - name: electronicintifada
+    url: "https://electronicintifada.net/rss.xml"
+    source_name: "Electronic Intifada"
+    website_url: "https://electronicintifada.net/"
+  - name: palestinechronicle
+    url: "https://www.palestinechronicle.com/feed/"
+    source_name: "Palestine Chronicle"
+    website_url: "https://www.palestinechronicle.com/"
+  - name: middleeastmonitor
+    url: "https://www.middleeastmonitor.com/category/region/middle-east/palestine/feed/"
+    source_name: "Middle East Monitor"
+    website_url: "https://www.middleeastmonitor.com/category/region/middle-east/palestine/"
+  - name: aljazeera
+    url: "https://www.aljazeera.com/xml/rss/all.xml"
+    source_name: "Al Jazeera"
+    website_url: "https://www.aljazeera.com/"
+  - name: mondoweiss
+    url: "https://mondoweiss.net/feed/"
+    source_name: "Mondoweiss"
+    website_url: "https://mondoweiss.net/"
+  - name: btselem
+    url: "https://www.btselem.org/rss"
+    source_name: "B'Tselem"
+    website_url: "https://www.btselem.org/"
+  - name: unrwa
+    url: "https://www.unrwa.org/newsroom/rss.xml"
+    source_name: "UNRWA"
+    website_url: "https://www.unrwa.org/"
+  - name: dcip
+    url: "https://www.dci-palestine.org/rss"
+    source_name: "Defense for Children International - Palestine"
+    website_url: "https://www.dci-palestine.org/"
+
+plugins:
+  - jekyll-feed # For generating your own RSS feed (optional but good practice later)

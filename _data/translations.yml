@@ -1,0 +1,18 @@
+home:
+  en: "Home"
+  ms: "Laman Utama"
+read_more:
+  en: "Read More"
+  ms: "Baca Lagi"
+source:
+  en: "Source"
+  ms: "Sumber"
+page_not_found:
+  en: "Page not found"
+  ms: "Halaman tidak dijumpai"
+news:
+  en: "News"
+  ms: "Berita"
+about:
+  en: "About"
+  ms: "Tentang Kami"

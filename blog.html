@@ -1,0 +1,40 @@
+---
+layout: default
+title: Blog
+permalink: /blog/
+---
+
+<div class="container">
+  <h1 class="title is-2">Blog</h1>
+  <p class="subtitle">Articles about Palestine and Gaza</p>
+  
+  <div class="columns is-multiline">
+    {% for post in site.blog reversed %}
+    <div class="column is-one-third">
+      <div class="card">
+        {% if post.image %}
+        <div class="card-image">
+          <figure class="image is-16by9">
+            <img src="{{ post.image | relative_url }}" alt="{{ post.title }}">
+          </figure>
+        </div>
+        {% endif %}
+        <div class="card-content">
+          <p class="title is-4">
+            <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+          </p>
+          <p class="subtitle is-6">
+            <time datetime="{{ post.date | date_to_xmlschema }}">
+              {{ post.date | date: "%B %d, %Y" }}
+            </time>
+          </p>
+          <div class="content">
+            {{ post.excerpt | strip_html | truncatewords: 30 }}
+          </div>
+          <a href="{{ post.url | relative_url }}" class="button is-link is-small">Read More</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>

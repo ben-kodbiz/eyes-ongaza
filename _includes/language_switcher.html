@@ -1,0 +1,14 @@
+<div class="language-switcher">
+  {% for lang in site.languages %}
+    {% if lang == site.default_language %}
+      {% assign lang_url = page.url %}
+    {% else %}
+      {% assign lang_url = lang | append: page.url %}
+    {% endif %}
+    
+    <a href="{{ lang_url | prepend: site.baseurl }}" class="{% if page.language == lang %}active{% endif %}">
+      {{ site.language_names[lang] }}
+    </a>
+    {% unless forloop.last %} | {% endunless %}
+  {% endfor %}
+</div>

@@ -1,0 +1,94 @@
+---
+layout: default
+title: Articles & History
+permalink: /articles/
+---
+
+<div class="container">
+  <h1 class="title is-2">Articles & History</h1>
+  <p class="subtitle">Documenting atrocities and historical context</p>
+
+  <div class="notification is-warning is-light">
+    <p>This section contains articles documenting atrocities committed by Israel, America, and others against Palestinians, as well as historical context about the Palestinian struggle.</p>
+  </div>
+
+  <div class="columns is-multiline">
+    {% for article in site.articles_history reversed %}
+    <div class="column is-half">
+      <div class="card">
+        <!-- Image section removed to save space -->
+        <div class="card-content">
+          <p class="title is-4">
+            <a href="{{ article.url | relative_url }}">{{ article.title }}</a>
+          </p>
+          <p class="subtitle is-6">
+            <time datetime="{{ article.date | date_to_xmlschema }}">
+              {{ article.date | date: "%B %d, %Y" }}
+            </time>
+            {% if article.author %} • By {{ article.author }}{% endif %}
+          </p>
+          <div class="content">
+            {{ article.excerpt | strip_html | truncatewords: 30 }}
+          </div>
+          <a href="{{ article.url | relative_url }}" class="button is-link is-small">Read More</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="section">
+    <h2 class="title is-3">Categories</h2>
+    <div class="tags are-medium">
+      {% assign categories = site.articles_history | map: "categories" | compact | uniq %}
+      {% for category in categories %}
+        <span class="tag is-link">{{ category }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Fix contrast issues in both light and dark modes */
+  .notification.is-light {
+    background-color: #f5f5f5;
+    color: #4a4a4a;
+  }
+
+  .dark-mode .notification.is-light {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .notification.is-warning.is-light {
+    background-color: #3d3000;
+    color: #ffffff;
+  }
+
+  /* Fix card contrast in dark mode */
+  .dark-mode .card {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .card-content {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .card .title,
+  .dark-mode .card .subtitle,
+  .dark-mode .card .content {
+    color: #ffffff !important;
+  }
+
+  .dark-mode .card a:not(.button) {
+    color: #4da6ff !important;
+  }
+
+  /* Fix tag contrast in dark mode */
+  .dark-mode .tag.is-link {
+    background-color: #3273dc;
+    color: #ffffff;
+  }
+</style>

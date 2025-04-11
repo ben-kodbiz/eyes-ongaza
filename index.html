@@ -1,0 +1,144 @@
+---
+layout: default
+title: Home
+---
+
+<div class="container">
+  <div class="section">
+    <h1 class="title is-2">Welcome to Palestine & Gaza News</h1>
+    <p class="subtitle">Your source for news, articles, and stories about Palestine</p>
+
+    <div class="columns is-multiline">
+      <!-- Latest News Section -->
+      <div class="column is-full">
+        <div class="box">
+          <h2 class="title is-3">Latest News</h2>
+          <p class="subtitle">Recent updates from Palestine and Gaza</p>
+          <div class="columns is-multiline">
+            {% for news_item in site.news_items limit:3 %}
+            <div class="column is-one-third">
+              {% include news_item_preview.html item=news_item %}
+            </div>
+            {% endfor %}
+          </div>
+          <div class="has-text-centered mt-4">
+            <a href="{{ site.baseurl }}/news/" class="button is-link">View All News</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Articles & History Section -->
+      <div class="column is-half">
+        <div class="box">
+          <h2 class="title is-3">Articles & History</h2>
+          <p class="subtitle">Documenting atrocities and historical context</p>
+          <div class="content">
+            {% for article in site.articles_history limit:3 %}
+            <div class="mb-4">
+              <h3 class="title is-4">
+                <a href="{{ article.url | relative_url }}">{{ article.title }}</a>
+              </h3>
+              <p>{{ article.excerpt | strip_html | truncatewords: 30 }}</p>
+              <a href="{{ article.url | relative_url }}" class="button is-small is-link">Read More</a>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="has-text-centered mt-4">
+            <a href="{{ site.baseurl }}/articles/" class="button is-link">View All Articles</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Blog Section -->
+      <div class="column is-half">
+        <div class="box">
+          <h2 class="title is-3">Blog</h2>
+          <p class="subtitle">Perspectives and analysis</p>
+          <div class="content">
+            {% for post in site.blog limit:3 %}
+            <div class="mb-4">
+              <h3 class="title is-4">
+                <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+              </h3>
+              <p>{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+              <a href="{{ post.url | relative_url }}" class="button is-small is-link">Read More</a>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="has-text-centered mt-4">
+            <a href="{{ site.baseurl }}/blog/" class="button is-link">View All Blog Posts</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Poems Section -->
+      <div class="column is-full">
+        <div class="box">
+          <h2 class="title is-3">Poems</h2>
+          <p class="subtitle">Dedicated to the fallen and martyrs of Palestine</p>
+          <div class="columns is-multiline">
+            {% for poem in site.poems limit:3 %}
+            <div class="column is-one-third">
+              <div class="card">
+                <div class="card-content">
+                  <p class="title is-4">
+                    <a href="{{ poem.url | relative_url }}">{{ poem.title }}</a>
+                  </p>
+                  <p class="subtitle is-6">
+                    {% if poem.author %}By {{ poem.author }}{% endif %}
+                  </p>
+                  <div class="content">
+                    {{ poem.excerpt | strip_html | truncatewords: 30 }}
+                  </div>
+                  <a href="{{ poem.url | relative_url }}" class="button is-link is-small">Read Poem</a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div class="has-text-centered mt-4">
+            <a href="{{ site.baseurl }}/poems/" class="button is-link">View All Poems</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Fix contrast issues in dark mode */
+  .dark-mode .box {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .box .title,
+  .dark-mode .box .subtitle,
+  .dark-mode .box .content {
+    color: #ffffff !important;
+  }
+
+  .dark-mode .card {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .card-content {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .card .title,
+  .dark-mode .card .subtitle,
+  .dark-mode .card .content {
+    color: #ffffff !important;
+  }
+
+  .dark-mode a:not(.button) {
+    color: #4da6ff !important;
+  }
+
+  .dark-mode a:not(.button):hover {
+    color: #80c1ff !important;
+  }
+</style>

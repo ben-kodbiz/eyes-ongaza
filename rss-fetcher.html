@@ -1,0 +1,27 @@
+---
+layout: null
+permalink: /rss-fetcher/
+---
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>RSS Fetcher</title>
+  <script>
+    // This is a simple page that will redirect to the feed viewer with the RSS content
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const feedUrl = urlParams.get('url');
+      
+      if (feedUrl) {
+        window.location.href = '/feed-viewer/?url=' + encodeURIComponent(feedUrl);
+      } else {
+        document.body.innerHTML = '<p>No feed URL provided.</p>';
+      }
+    });
+  </script>
+</head>
+<body>
+  <p>Redirecting to feed viewer...</p>
+</body>
+</html>

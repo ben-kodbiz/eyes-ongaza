@@ -1,0 +1,43 @@
+/* Poem styling */
+.poem {
+  margin: 2rem auto;
+  max-width: 800px;
+}
+
+.poem-content {
+  font-family: 'Georgia', serif;
+  line-height: 1.8;
+  margin: 2rem auto;
+}
+
+.poem-content p {
+  margin-bottom: 1.5em;
+  white-space: pre-line;
+}
+
+.poem-content em {
+  display: block;
+  text-align: center;
+  font-style: italic;
+  margin: 2em 0;
+  color: #666;
+}
+
+.poem-content h2 {
+  text-align: center;
+  margin-bottom: 1.5em;
+  font-size: 1.5em;
+}
+
+/* Dark mode adjustments */
+.dark-mode .poem-content {
+  color: #ffffff;
+}
+
+.dark-mode .poem-content em {
+  color: #aaa;
+}
+
+.dark-mode .poem-content h2 {
+  color: #ffffff;
+}

@@ -1,0 +1,97 @@
+---
+layout: default
+title: Poems
+permalink: /poems/
+---
+
+<div class="container">
+  <h1 class="title is-2">Poems</h1>
+  <p class="subtitle">Dedicated to the fallen and martyrs of Palestine</p>
+
+  <div class="notification is-danger is-light">
+    <p>This section contains poems dedicated to the memory of Palestinians who have lost their lives in the ongoing conflict. These poems honor their sacrifice and keep their memory alive.</p>
+  </div>
+
+  <div class="columns is-multiline">
+    {% for poem in site.poems reversed %}
+    <div class="column is-one-third">
+      <div class="card">
+        <!-- Image section removed to save space -->
+        <div class="card-content">
+          <p class="title is-4">
+            <a href="{{ poem.url | relative_url }}">{{ poem.title }}</a>
+          </p>
+          <p class="subtitle is-6">
+            {% if poem.author %}By {{ poem.author }}{% endif %}
+            {% if poem.date %}
+            <br>
+            <time datetime="{{ poem.date | date_to_xmlschema }}">
+              {{ poem.date | date: "%B %d, %Y" }}
+            </time>
+            {% endif %}
+          </p>
+          <div class="content">
+            {{ poem.excerpt | strip_html | truncatewords: 30 }}
+          </div>
+          <a href="{{ poem.url | relative_url }}" class="button is-link is-small">Read Poem</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="section">
+    <h2 class="title is-3">Dedications</h2>
+    <div class="tags are-medium">
+      {% assign dedications = site.poems | map: "dedication" | compact | uniq %}
+      {% for dedication in dedications %}
+        <span class="tag is-danger">{{ dedication }}</span>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Fix contrast issues in both light and dark modes */
+  .notification.is-light {
+    background-color: #f5f5f5;
+    color: #4a4a4a;
+  }
+
+  .dark-mode .notification.is-light {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .notification.is-danger.is-light {
+    background-color: #5c1a1a;
+    color: #ffffff;
+  }
+
+  /* Fix card contrast in dark mode */
+  .dark-mode .card {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .card-content {
+    background-color: #2c2c2c;
+    color: #ffffff;
+  }
+
+  .dark-mode .card .title,
+  .dark-mode .card .subtitle,
+  .dark-mode .card .content {
+    color: #ffffff !important;
+  }
+
+  .dark-mode .card a:not(.button) {
+    color: #4da6ff !important;
+  }
+
+  /* Fix tag contrast in dark mode */
+  .dark-mode .tag.is-danger {
+    background-color: #ff3860;
+    color: #ffffff;
+  }
+</style>

@@ -1,0 +1,8 @@
+<article class="box">
+  <h3 class="title is-5"><a href="{{ include.item.link }}">{{ include.item.title }}</a></h3>
+  <p class="subtitle is-7">Source: {{ include.source_name }} - {{ include.item.pubDate | date: "%Y-%m-%d" }}</p>
+  <div class="content">
+    <p>{{ include.item.excerpt }}...</p>
+  </div>
+  <p><a href="{{ include.item.link }}" class="button is-small is-link">Read More</a></p>
+</article>
