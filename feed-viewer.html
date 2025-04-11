@@ -133,7 +133,30 @@ permalink: /feed-viewer/
         const feedTitle = data.querySelector('channel > title')?.textContent || 'RSS Feed';
         document.getElementById('source-name').textContent = feedTitle;
 
-        const items = data.querySelectorAll('item');
+        // Get all items
+        const allItems = data.querySelectorAll('item');
+
+        // Filter items for Al Jazeera to only include Palestine/Gaza related news
+        let items = allItems;
+        const feedUrl = urlParams.get('url');
+        if (feedUrl && feedUrl.includes('aljazeera.com')) {
+          // Keywords to filter Al Jazeera news
+          const keywords = ['palestine', 'palestinian', 'gaza', 'west bank', 'israel', 'hamas', 'idf', 'jerusalem', 'rafah', 'khan younis', 'ceasefire', 'hostage', 'netanyahu', 'occupation'];
+
+          items = Array.from(allItems).filter(item => {
+            const title = (item.querySelector('title')?.textContent || '').toLowerCase();
+            const description = (item.querySelector('description')?.textContent || '').toLowerCase();
+            return keywords.some(keyword => title.includes(keyword) || description.includes(keyword));
+          });
+
+          // If no items match, show a message
+          if (items.length === 0) {
+            document.getElementById('feed-content').innerHTML = '<div class="notification is-warning">No Palestine or Gaza related news found in this feed currently. Please try another source or check back later.</div>';
+            document.getElementById('loading-notification').style.display = 'none';
+            return;
+          }
+        }
+
         let html = '<div class="columns is-multiline">';
 
         items.forEach(item => {
